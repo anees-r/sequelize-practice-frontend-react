@@ -29,7 +29,8 @@ const Tutorials = (props) => {
     const filtered = response.filter(
       (item) =>
         item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchTerm.toLowerCase())
+        item.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.published.toString().includes(searchTerm.toLowerCase())
     );
     setFilteredData(filtered);
     document.title = "SRA - Home";

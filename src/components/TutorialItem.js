@@ -26,11 +26,11 @@ const TutorialItem = (props) => {
         <div className="card-body">
           <p className="card-text">{props.description}</p>
           <p className="card-text">
-            Status:{" "}
+            Is Published:{" "}
             {props.status ? (
-              <span className="text-success">Published!</span>
+              <span className="text-success">true</span>
             ) : (
-              <span className="text-danger">Not Published!</span>
+              <span className="text-danger">false</span>
             )}
           </p>
           <div className="d-flex justify-content-end">
