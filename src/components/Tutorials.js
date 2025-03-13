@@ -5,43 +5,56 @@ import { useSearchParams } from "react-router-dom";
 const Tutorials = (props) => {
   const [response, setResponse] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchParams] = useSearchParams();
-  const title = searchParams.get("title");
-  const fetchData = async () => {
-    let api;
-    if (title) {
-      api = `http://localhost:8080/api/tutorials?title=${title}`;
-    } else {
-      api = "http://localhost:8080/api/tutorials";
-    }
-    const res = await fetch(api, {
-      method: "GET",
-    });
-
-    if (!res) {
-      throw new Error("ERROR: Could not fetch data from server!");
-    } else {
-      const data = await res.json();
-      setResponse(data);
-      setLoading(false);
-    }
-  };
+  const [searchTerm, setSearchTerm] = useState(""); // State to store search term
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch("http://localhost:8080/api/tutorials", {
+        method: "GET",
+      });
+
+      if (!res) {
+        throw new Error("ERROR: Could not fetch data from server!");
+      } else {
+        const data = await res.json();
+        setResponse(data);
+        setLoading(false);
+      }
+    };
     fetchData();
-    if (title) {
-      document.title = `"${title}" - SRA`;
-    } else {
-      document.title = "SRA - Home";
-    } // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title]);
+  }, []);
+
+  useEffect(() => {
+    const filtered = response.filter(
+      (item) =>
+        item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredData(filtered);
+    document.title = "SRA - Home";
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm, response]);
 
   return (
-    <div className="mx-5">
+    <div className="mx-5 mb-5 pb-5">
+      <div className="d-flex mx-5 justify-content-center my-2 ">
+        <input
+          style={{ borderRadius: "25px", height: "40px", border: "solid 1px" }}
+          className="p-3 mx-2 col-md-4"
+          type="text"
+          id="query"
+          placeholder="Search here"
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+          }}
+        />
+      </div>
       <h3 className="my-4">Tutorials:</h3>
       {loading && (
         <div className="d-flex justify-content-center flex-column align-items-center my-5">
-          <div class="spinner-border" role="status"></div>
+          <div className="spinner-border" role="status"></div>
           <p>Loading</p>
         </div>
       )}
@@ -55,7 +68,7 @@ const Tutorials = (props) => {
       )}
       {!loading && (
         <div className="row">
-          {response.map((e) => {
+          {filteredData.map((e) => {
             return (
               <div className="col-md-4 my-2 x" key={e.id}>
                 <TutorialItem

@@ -17,10 +17,10 @@ const AddButton = () => {
     }}
   return (
     <>
-    <Link to="/tutorial/add-new" className="btn btn-dark position-absolute bottom-0 end-0 m-5 col-md-1">
+    <Link to="/tutorial/add-new" className="btn btn-dark position-fixed bottom-0 end-0 m-5 col-md-1">
       Add New
     </Link>
-    <div onClick={handleDeleteAll} className="btn btn-danger position-absolute bottom-0 start-0 m-5 col-md-1">
+    <div onClick={handleDeleteAll} className="btn btn-danger position-fixed bottom-0 start-0 m-5 col-md-1">
       Delete All
     </div></>
     
