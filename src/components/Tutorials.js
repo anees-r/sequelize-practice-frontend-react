@@ -1,6 +1,5 @@
 import TutorialItem from "./TutorialItem";
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
 
 const Tutorials = (props) => {
   const [response, setResponse] = useState([]);
